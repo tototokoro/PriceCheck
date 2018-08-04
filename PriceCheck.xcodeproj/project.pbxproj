@@ -12,6 +12,8 @@
 		82F13AB5211576CE006FD4C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 82F13AB3211576CE006FD4C2 /* Main.storyboard */; };
 		82F13AB7211576D0006FD4C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82F13AB6211576D0006FD4C2 /* Assets.xcassets */; };
 		82F13ABA211576D0006FD4C2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 82F13AB8211576D0006FD4C2 /* LaunchScreen.storyboard */; };
+		82F13AC22115A74C006FD4C2 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F13AC12115A74C006FD4C2 /* CameraViewController.swift */; };
+		82F13AC42115A9ED006FD4C2 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F13AC32115A9ED006FD4C2 /* ResultViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		82F13AB6211576D0006FD4C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		82F13AB9211576D0006FD4C2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		82F13ABB211576D0006FD4C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		82F13AC12115A74C006FD4C2 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		82F13AC32115A9ED006FD4C2 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +64,8 @@
 				82F13AB6211576D0006FD4C2 /* Assets.xcassets */,
 				82F13AB8211576D0006FD4C2 /* LaunchScreen.storyboard */,
 				82F13ABB211576D0006FD4C2 /* Info.plist */,
+				82F13AC12115A74C006FD4C2 /* CameraViewController.swift */,
+				82F13AC32115A9ED006FD4C2 /* ResultViewController.swift */,
 			);
 			path = PriceCheck;
 			sourceTree = "<group>";
@@ -137,6 +143,8 @@
 			files = (
 				82F13AB2211576CE006FD4C2 /* ViewController.swift in Sources */,
 				82F13AB0211576CE006FD4C2 /* AppDelegate.swift in Sources */,
+				82F13AC22115A74C006FD4C2 /* CameraViewController.swift in Sources */,
+				82F13AC42115A9ED006FD4C2 /* ResultViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
