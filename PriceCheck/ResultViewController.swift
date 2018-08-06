@@ -1,16 +1,15 @@
 import UIKit
 
 class ResultViewController: UIViewController {
-    var codeNum: String?
+    
+    var productList: [(name:String, price:String, shippingPrice:String, condition:String, link:URL, image:URL)] = []
     
     @IBOutlet weak var number: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        number.text = codeNum
-        
-        print("sss\(number)")
+        print(productList)
     }
 
     override func didReceiveMemoryWarning() {
