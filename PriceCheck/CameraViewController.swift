@@ -6,7 +6,12 @@ import Kanna
 
 class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     
-     var productList: [(name:String, price:String, shippingPrice:String, condition:String, link:URL, image:URL)] = []
+    var productList: [(name:String, price:String, shippingPrice:String, condition:String, link:URL, image:URL)] = []
+    
+    var isbn: String = ""
+    var cCode: String = ""
+    
+    let detectionArea = UIView()
     
     // カメラやマイクの入出力を管理するオブジェクトを生成
     private let session = AVCaptureSession()
@@ -43,6 +48,8 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
                         previewLayer.frame = self.view.bounds
                         previewLayer.videoGravity = .resizeAspectFill
                         self.view.layer.addSublayer(previewLayer)
+                     
+                        addBorder()
                         
                         // 読み取り開始
                         self.session.startRunning()
@@ -54,6 +61,24 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         }
     }
     
+    //バーコード読み取り時に印を表示する
+    private func addBorder(){
+        let barcodeImage = UIImage(named: "barcode")!
+        let width :CGFloat = barcodeImage.size.width
+        let height :CGFloat = barcodeImage.size.height
+        
+        let barcodeImageView = UIImageView(image: barcodeImage)
+        barcodeImageView.alpha = 0.5
+        barcodeImageView.frame = CGRect(x: 0, y: 0, width: width * 2, height: height*2)
+        
+        let screenWidth: CGFloat = view.frame.size.width
+        let screenHeight: CGFloat = view.frame.size.height
+        
+        barcodeImageView.center = CGPoint(x: screenWidth/2, y: screenHeight/3)
+        
+        self.view.addSubview(barcodeImageView)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         self.session.startRunning()
     }
@@ -62,33 +87,49 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         // Dispose of any resources that can be recreated.
     }
     
+    //バーコードを読み取った際に呼び出される
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         
         for data in metadataObjects as! [AVMetadataMachineReadableCodeObject]{
-            //バーコードかどうか確認
-            if data.type != .ean13 {continue}
             
-            //内容が空かどうかの確認
-            if data.stringValue == nil {continue}
-            
-            if (data.stringValue?.prefix(3).contains("192"))! {
-                print("下のバーコードを読み取った\n修正しようね")
-                continue
-            }
-            
-            //読み取り終了
-            self.session.stopRunning()
-            
-            //番号を元にスクレイピング
-            scrapeWebsite(barcodeNumber: data.stringValue!)
-            
-            //５秒後に画面遷移（要修正）
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                self.performSegue(withIdentifier: "showResultView", sender: self.productList)
+            if(isbn == "" || cCode == ""){
+                //バーコードかどうか確認
+                if data.type != .ean13 {continue}
+                
+                //内容が空かどうかの確認
+                if data.stringValue == nil {continue}
+                
+                //ISBN時の処理
+                if (data.stringValue?.prefix(3).contains("978"))! {
+                    isbn = data.stringValue!
+                    continue
+                }
+                //Cコード時の処理（本の内容など）
+                if (data.stringValue?.prefix(3).contains("192"))! {
+                    cCode = data.stringValue!
+                    print(cCode)
+                    cCode = String(cCode[cCode.index(cCode.startIndex, offsetBy: 3)..<cCode.index(cCode.endIndex, offsetBy: -6)])
+                    
+                    continue
+                }
+            } else{
+                //読み取り終了
+                self.session.stopRunning()
+                
+                //番号を元にスクレイピング
+                scrapeWebsite(barcodeNumber: isbn)
+                
+                print(cCode)
+                
+                //５秒後に画面遷移（要修正）
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    self.performSegue(withIdentifier: "showResultView", sender: self.productList)
+                }
             }
         }
     }
     
+    //取得したISBNに従ってスクレイピング
     func scrapeWebsite(barcodeNumber: String){
         //Amazon検索
         //Getリクエスト　指定URLのコードを取得
@@ -182,6 +223,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         }
     }
     
+    //画面遷移時に製品リストを渡す
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showResultView" {
             let nextViewController = segue.destination as! ResultViewController
