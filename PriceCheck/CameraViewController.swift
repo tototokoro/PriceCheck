@@ -6,7 +6,7 @@ import Kanna
 
 class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     
-    var productList: [(name:String, price:String, shippingPrice:String, condition:String, link:URL, image:URL)] = []
+    var productList: [(name:String, price:Int, shippingPrice:Int, condition:String, link:URL, image:URL)] = []
     
     var isbn: String = ""
     var cCode: String = ""
@@ -107,11 +107,11 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
                 //Cコード時の処理（本の内容など）
                 if (data.stringValue?.prefix(3).contains("192"))! {
                     cCode = data.stringValue!
-                    print(cCode)
                     cCode = String(cCode[cCode.index(cCode.startIndex, offsetBy: 3)..<cCode.index(cCode.endIndex, offsetBy: -6)])
                     
                     continue
                 }
+                
             } else{
                 //読み取り終了
                 self.session.stopRunning()
@@ -151,9 +151,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
                                 if let doc = try? HTML(html: html, encoding: .utf8){
                                     
                                     var imageURL: URL?
-                                    var price: String?
                                     var shippingPrice: String?
-                                    var codition: String?
                                     
                                     if let image = doc.css("div#olpProductImage img").first!["src"]{
                                         //アマゾンの画像URLを取得
@@ -167,19 +165,20 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
                                     
                                     for product in products.prefix(5){
                                         //値段
-                                        price = product.css("span.a-color-price").first!.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+                                        let price = product.css("span.a-color-price").first!.text!.trimmingCharacters(in: .whitespacesAndNewlines)
                                         
                                         //送料
                                         if let a = product.css("span.olpShippingPrice").first{
                                             shippingPrice = a.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+                                            
                                         } else{
-                                            shippingPrice = "￥ 0"
+                                            shippingPrice = "0"
                                         }
                                         
                                         //コンディション
-                                        codition = product.css("span.olpCondition").first!.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+                                        let codition = product.css("span.olpCondition").first!.text!.trimmingCharacters(in: .whitespacesAndNewlines)
                                         
-                                        self.productList.append((name: productName!, price: price!, shippingPrice: shippingPrice!,  condition: codition!, link: URL(string: detailPageUrl)!, image: imageURL!))
+                                        self.productList.append((name: productName!, price: self.getPrice(price: price), shippingPrice: self.getPrice(price: shippingPrice!),  condition: codition, link: URL(string: detailPageUrl)!, image: imageURL!))
                                     }
                                 }
                             }
@@ -199,7 +198,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
                                         if(numberItems == "検索結果 0件"){
                                             print(numberItems)
                                         } else {
-                                            var tempProductList: [(name:String, price:String, shippingPrice:String, condition:String, link:URL, image:URL)] = []
+                                            var tempProductList: [(name:String, price:Int, shippingPrice:Int, condition:String, link:URL, image:URL)] = []
                                             
                                             let products = doc.css("section.items-box")
                                             
@@ -208,7 +207,9 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
                                                 let price = product.css("div.items-box-price").first!.text!.trimmingCharacters(in: .whitespacesAndNewlines)
                                                 let link = product.css("a").first!["href"]
                                                 let image = product.css("img").first!["data-src"]
-                                                tempProductList.append((name: name, price: price, shippingPrice: "0", condition: "不明", link: URL(string: link!)!, image: URL(string: image!)!))
+                                                tempProductList.append((name: name, price: self.getPrice(price: price), shippingPrice: 0, condition: "不明", link: URL(string: link!)!, image: URL(string: image!)!))
+                                                
+                                                print(price)
                                                 
                                             }
                                             self.productList += tempProductList.prefix(5)
@@ -223,11 +224,28 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         }
     }
     
+    //文字列で与えられた価格をintに変換
+    private func getPrice(price: String) -> Int{
+        
+        var newPrice = ""
+        
+        price.forEach{
+            switch $0 {
+            case "0"..."9":
+                newPrice += String($0)
+            default:
+                break
+            }
+        }
+        
+        return Int(newPrice)!
+    }
+    
     //画面遷移時に製品リストを渡す
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showResultView" {
             let nextViewController = segue.destination as! ResultViewController
-            nextViewController.productList = sender as! [(name:String, price:String, shippingPrice:String, condition:String, link:URL, image:URL)]
+            nextViewController.productList = sender as! [(name:String, price:Int, shippingPrice:Int, condition:String, link:URL, image:URL)]
         }
     }
 }

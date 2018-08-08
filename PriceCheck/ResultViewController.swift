@@ -3,7 +3,7 @@ import SafariServices
 
 class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SFSafariViewControllerDelegate {
     
-    var productList: [(name:String, price:String, shippingPrice:String, condition:String, link:URL, image:URL)] = []
+    var productList: [(name:String, price:Int, shippingPrice:Int, condition:String, link:URL, image:URL)] = []
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -35,9 +35,9 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.productNameLabel.text = productList[indexPath.row].name.replacingOccurrences(of: " ", with: "")
 
         cell.conditionLabel.text = productList[indexPath.row].condition.replacingOccurrences(of: " ", with: "")
-        cell.priceLabel.text = productList[indexPath.row].price
+        cell.priceLabel.text = "¥ \(String(productList[indexPath.row].price))"
 
-        cell.shippingPriceLabel.text = productList[indexPath.row].shippingPrice
+        cell.shippingPriceLabel.text = "¥ \(String(productList[indexPath.row].shippingPrice))"
         
         return cell
     }
