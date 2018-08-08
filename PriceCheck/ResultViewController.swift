@@ -1,6 +1,7 @@
 import UIKit
+import SafariServices
 
-class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SFSafariViewControllerDelegate {
     
     var productList: [(name:String, price:String, shippingPrice:String, condition:String, link:URL, image:URL)] = []
     
@@ -10,6 +11,8 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
         super.viewDidLoad()
 
         tableView.dataSource = self
+        
+        tableView.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -36,7 +39,27 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
         cell.shippingPriceLabel.text = productList[indexPath.row].shippingPrice
         
-        print("s")
         return cell
+    }
+    
+    //Cellが選択された時に呼び出されるdelegateメソッド
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //ハイライト解除
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        //SFSafariViewを開く
+        let safariViewController = SFSafariViewController(url: productList[indexPath.row].link)
+        
+        //delegateの通知先を自分自身
+        safariViewController.delegate = self
+        
+        //SafariViewが開かれる
+        present(safariViewController, animated: true, completion: nil)
+    }
+    
+    //SafariViewが閉じられた時に呼ばれるdelegateメソッド
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        //SafariViewを閉じる
+        dismiss(animated: true, completion: nil)
     }
 }
