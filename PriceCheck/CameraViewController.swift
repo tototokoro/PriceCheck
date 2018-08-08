@@ -123,6 +123,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
                 
                 //５秒後に画面遷移（要修正）
                 DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    self.productList.sort(by: {($0.price + $0.shippingPrice) < ($1.price + $1.shippingPrice)})
                     self.performSegue(withIdentifier: "showResultView", sender: self.productList)
                 }
             }
