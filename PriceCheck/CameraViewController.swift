@@ -112,18 +112,19 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
                     continue
                 }
                 
-            } else{
+            } else {
                 //読み取り終了
                 self.session.stopRunning()
                 
-                //番号を元にスクレイピング
-                scrapeWebsite(barcodeNumber: isbn)
-                
                 print(cCode)
                 
+                //番号を元にスクレイピング
+                self.scrapeWebsite(barcodeNumber: self.isbn)
+                
+                self.productList.sort(by: {($0.price + $0.shippingPrice) < ($1.price + $1.shippingPrice)})
+                
                 //５秒後に画面遷移（要修正）
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                    self.productList.sort(by: {($0.price + $0.shippingPrice) < ($1.price + $1.shippingPrice)})
+                DispatchQueue.main.asyncAfter(deadline: .now() + 4){
                     self.performSegue(withIdentifier: "showResultView", sender: self.productList)
                 }
             }
@@ -213,6 +214,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
                                                 print(price)
                                                 
                                             }
+                                            tempProductList.sort(by: {($0.price + $1.shippingPrice) < ($1.price + $1.shippingPrice)})
                                             self.productList += tempProductList.prefix(5)
                                         }
                                     }
