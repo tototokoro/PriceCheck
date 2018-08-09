@@ -7,9 +7,10 @@ import Kanna
 class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     
     var productList: [(name:String, price:Int, shippingPrice:Int, condition:String, link:URL, image:URL)] = []
-    
+    var passData: [String: Any] = [:]
     var isbn: String = ""
     var cCode: String = ""
+    var reserveURL = ""
     
     let detectionArea = UIView()
     
@@ -120,15 +121,54 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
                 
                 //番号を元にスクレイピング
                 self.scrapeWebsite(barcodeNumber: self.isbn)
+                self.searchBook(isbn: self.isbn)
                 
                 self.productList.sort(by: {($0.price + $0.shippingPrice) < ($1.price + $1.shippingPrice)})
                 
                 //５秒後に画面遷移（要修正）
                 DispatchQueue.main.asyncAfter(deadline: .now() + 4){
-                    self.performSegue(withIdentifier: "showResultView", sender: self.productList)
+                    self.passData["products"] = self.productList
+                    self.passData["reserveURL"] = self.reserveURL
+                    self.performSegue(withIdentifier: "showResultView", sender: self.passData)
                 }
             }
         }
+    }
+    
+    func searchBook(isbn: String){
+        let system_id = "Tokyo_Nakano"
+        print("search")
+        
+        guard let req_url = URL(string: "http://api.calil.jp/check?appkey=\(apiKey["kariru"]!)&isbn=\(isbn)&systemid=\(system_id)&callback=no&format=json") else {
+            return
+        }
+        
+        print(req_url)
+        //リクエストに必要な情報を生成
+        let req = URLRequest(url: req_url)
+        //データ転送を管理するためのセッションを生成
+        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
+        //リクエストをタスクとして登録
+        let task = session.dataTask(with: req, completionHandler: {
+            (data, response, error) in
+            //セッションを終了
+            session.finishTasksAndInvalidate()
+            do{
+                if let jsonObject = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary,
+                    let books = jsonObject["books"] as? NSDictionary,
+                    let isbn = books[isbn] as? NSDictionary,
+                    //要修正
+                    let location = isbn["Tokyo_Nakano"] as? NSDictionary
+                {
+                    self.reserveURL = (location["reserveurl"] as? String)!
+                }
+            } catch {
+                print(error)
+            }
+        })
+        
+        task.resume()
+        
     }
     
     //取得したISBNに従ってスクレイピング
@@ -248,7 +288,9 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showResultView" {
             let nextViewController = segue.destination as! ResultViewController
-            nextViewController.productList = sender as! [(name:String, price:Int, shippingPrice:Int, condition:String, link:URL, image:URL)]
+            nextViewController.passedData = sender as! [String: Any]
+//            nextViewController.productList = sender as! [(name:String, price:Int, shippingPrice:Int, condition:String, link:URL, image:URL)]
+////            nextViewController.reserveURL = sender as! String
         }
     }
 }

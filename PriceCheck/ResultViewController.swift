@@ -3,18 +3,40 @@ import SafariServices
 
 class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SFSafariViewControllerDelegate {
     
+    var passedData: [String: Any] = [:]
     var productList: [(name:String, price:Int, shippingPrice:Int, condition:String, link:URL, image:URL)] = []
+    var reserveURL = ""
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var reserveButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        productList = passedData["products"] as! [(name: String, price: Int, shippingPrice: Int, condition: String, link: URL, image: URL)]
+        reserveURL = passedData["reserveURL"] as! String
+        
         tableView.dataSource = self
         
         tableView.delegate = self
+        
+        if(self.reserveURL != ""){
+            self.reserveButton.isHidden = false
+            self.reserveButton.isEnabled = true
+            print(reserveURL)
+        } else{
+            print("その本ないよ")
+        }
     }
 
+    @IBAction func showReservePage(_ sender: Any) {
+        let safariViewController = SFSafariViewController(url: URL(string: reserveURL)!)
+        
+        safariViewController.delegate = self
+        
+        present(safariViewController, animated: true, completion: nil)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

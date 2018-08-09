@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0A8EA5F7AEE6047CA5C695C8 /* Pods_PriceCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C913303E8A41A5E75B01B3F7 /* Pods_PriceCheck.framework */; };
 		82268382211835A200BA0828 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82268381211835A200BA0828 /* CustomTableViewCell.swift */; };
+		827EECD9211C23CC00016732 /* ApiKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827EECD8211C23CC00016732 /* ApiKey.swift */; };
 		82F13AB0211576CE006FD4C2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F13AAF211576CE006FD4C2 /* AppDelegate.swift */; };
 		82F13AB2211576CE006FD4C2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F13AB1211576CE006FD4C2 /* ViewController.swift */; };
 		82F13AB5211576CE006FD4C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 82F13AB3211576CE006FD4C2 /* Main.storyboard */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		82268381211835A200BA0828 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
+		827EECD8211C23CC00016732 /* ApiKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiKey.swift; sourceTree = "<group>"; };
 		82F13AAC211576CE006FD4C2 /* PriceCheck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PriceCheck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82F13AAF211576CE006FD4C2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		82F13AB1211576CE006FD4C2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				82F13AC12115A74C006FD4C2 /* CameraViewController.swift */,
 				82F13AC32115A9ED006FD4C2 /* ResultViewController.swift */,
 				82268381211835A200BA0828 /* CustomTableViewCell.swift */,
+				827EECD8211C23CC00016732 /* ApiKey.swift */,
 			);
 			path = PriceCheck;
 			sourceTree = "<group>";
@@ -215,6 +218,7 @@
 				82F13AB0211576CE006FD4C2 /* AppDelegate.swift in Sources */,
 				82F13AC22115A74C006FD4C2 /* CameraViewController.swift in Sources */,
 				82F13AC42115A9ED006FD4C2 /* ResultViewController.swift in Sources */,
+				827EECD9211C23CC00016732 /* ApiKey.swift in Sources */,
 				82268382211835A200BA0828 /* CustomTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
