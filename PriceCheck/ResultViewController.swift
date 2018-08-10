@@ -17,8 +17,9 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
         reserveURL = passedData["reserveURL"] as! String
         
         tableView.dataSource = self
-        
         tableView.delegate = self
+        
+        self.tableView.reloadData()
         
         if(self.reserveURL != ""){
             self.reserveButton.isHidden = false

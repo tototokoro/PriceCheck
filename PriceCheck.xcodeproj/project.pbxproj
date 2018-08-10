@@ -69,12 +69,12 @@
 		82F13AAE211576CE006FD4C2 /* PriceCheck */ = {
 			isa = PBXGroup;
 			children = (
-				82F13AAF211576CE006FD4C2 /* AppDelegate.swift */,
-				82F13AB1211576CE006FD4C2 /* ViewController.swift */,
 				82F13AB3211576CE006FD4C2 /* Main.storyboard */,
 				82F13AB6211576D0006FD4C2 /* Assets.xcassets */,
 				82F13AB8211576D0006FD4C2 /* LaunchScreen.storyboard */,
 				82F13ABB211576D0006FD4C2 /* Info.plist */,
+				82F13AAF211576CE006FD4C2 /* AppDelegate.swift */,
+				82F13AB1211576CE006FD4C2 /* ViewController.swift */,
 				82F13AC12115A74C006FD4C2 /* CameraViewController.swift */,
 				82F13AC32115A9ED006FD4C2 /* ResultViewController.swift */,
 				82268381211835A200BA0828 /* CustomTableViewCell.swift */,
@@ -176,12 +176,10 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-PriceCheck/Pods-PriceCheck-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Kanna/Kanna.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kanna.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;

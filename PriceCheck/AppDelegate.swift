@@ -1,11 +1,3 @@
-//
-//  AppDelegate.swift
-//  PriceCheck
-//
-//  Created by 處雄飛 on 2018/08/04.
-//  Copyright © 2018年 處雄飛. All rights reserved.
-//
-
 import UIKit
 
 @UIApplicationMain
@@ -41,6 +33,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
 }
-
