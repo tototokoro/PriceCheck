@@ -18,27 +18,49 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y1o-Bq-7k0">
-                                <rect key="frame" x="81" y="437" width="219" height="41"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y1o-Bq-7k0">
+                                <rect key="frame" x="16" y="323.5" width="343" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="gop-Kf-LNn"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <state key="normal" title="バーコード読み取り"/>
                                 <connections>
                                     <action selector="toCameraView:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Spe-Z8-pLJ"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="htV-aB-NCT">
+                                <rect key="frame" x="16" y="423.5" width="343" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="Ld7-34-hLu"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <state key="normal" title="読みたい本リスト"/>
+                                <connections>
+                                    <action selector="toBookListView:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zjN-Pk-JzI"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="htV-aB-NCT" secondAttribute="trailing" constant="16" id="MbP-YZ-EBV"/>
+                            <constraint firstItem="y1o-Bq-7k0" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="ZcM-Kg-7M9"/>
+                            <constraint firstItem="htV-aB-NCT" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="g5G-fx-HjK"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="y1o-Bq-7k0" secondAttribute="trailing" constant="16" id="jRt-0G-bj0"/>
+                            <constraint firstItem="y1o-Bq-7k0" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="20" id="vXc-vo-Dlf"/>
+                            <constraint firstItem="htV-aB-NCT" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="120" id="zXv-48-NJ4"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="JkT-jH-c4s"/>
                     <connections>
                         <segue destination="6IY-es-oEs" kind="show" identifier="showCameraView" id="u3t-IM-S2k"/>
+                        <segue destination="U24-QS-58Z" kind="show" identifier="showBookListView" id="E8X-gv-98O"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="814" y="34"/>
+            <point key="canvasLocation" x="813.60000000000002" y="33.733133433283363"/>
         </scene>
         <!--Camera View Controller-->
         <scene sceneID="V97-az-c5U">
@@ -57,6 +79,21 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rQz-UP-iZA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1597.5999999999999" y="33.733133433283363"/>
+        </scene>
+        <!--Book List View Controller-->
+        <scene sceneID="igB-Yc-QU4">
+            <objects>
+                <viewController id="U24-QS-58Z" customClass="BookListViewController" customModule="PriceCheck" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="FQk-iu-Hfg">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="dMQ-Kk-nnT"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JLT-de-5a5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1598" y="754"/>
         </scene>
         <!--Result View Controller-->
         <scene sceneID="aDf-S8-3Wm">

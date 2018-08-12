@@ -6,12 +6,18 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var passedData: [String: Any] = [:]
     var productList: [(name:String, price:Int, shippingPrice:Int, condition:String, link:URL, image:URL)] = []
     var reserveURL = ""
+    //ナビゲーションバーボタン（読みたい本）
+    var addBookButton: UIBarButtonItem!
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var reserveButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        addBookButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(clickAddBook(sender:)))
+
+        self.navigationItem.setRightBarButtonItems([addBookButton], animated: true)
 
         productList = passedData["products"] as! [(name: String, price: Int, shippingPrice: Int, condition: String, link: URL, image: URL)]
         reserveURL = passedData["reserveURL"] as! String
@@ -24,10 +30,17 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if(self.reserveURL != ""){
             self.reserveButton.isHidden = false
             self.reserveButton.isEnabled = true
-            print(reserveURL)
+            
+            reserveButton.setTitle("図書館で予約する", for: .normal)
         } else{
-            print("その本ないよ")
+            reserveButton.setTitle("図書館では見つかりませんでした", for: .normal)
         }
+    }
+    
+    //本をリストに追加
+    @objc func clickAddBook(sender: UIButton){
+        
+        
     }
 
     @IBAction func showReservePage(_ sender: Any) {
