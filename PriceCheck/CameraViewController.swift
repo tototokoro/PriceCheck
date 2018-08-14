@@ -9,7 +9,6 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     var passData: [String: Any] = [:]
     var isbn13: String = ""
     var cCode: String = ""
-    var reserveURL = ""
     
     let detectionArea = UIView()
     
@@ -119,60 +118,22 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
                 self.session.stopRunning()
                 
                 print(cCode)
-
-                let dispatchGroup = DispatchGroup()
-                let queue1 = DispatchQueue(label: "scrapingProductsInfo")
-                let queue2 = DispatchQueue(label: "getReserveURL")
-                
-                //番号を元にスクレイピング
-                queue1.async (group: dispatchGroup) {
-                    self.searchBook(isbn13: self.isbn13)
-                }
                 let isbn10 = isbn13Toisbn10(isbn13: isbn13)
-                queue2.async (group: dispatchGroup){
-                    self.scrapeWebsite(isbn13: self.isbn13, isbn10: isbn10)
-                }
                 
-                dispatchGroup.notify(queue: .main){
-                    print(self.productList.count)
-                    self.productList.sort(by: {($0.price + $0.shippingPrice) < ($1.price + $1.shippingPrice)})
-                    self.passData["products"] = self.productList
-                    self.passData["reserveURL"] = self.reserveURL
-                    self.performSegue(withIdentifier: "showResultView", sender: self.passData)
+                DispatchQueue.global(qos: .default).async {
+                    //番号を元にスクレイピング
+                    self.scrapeWebsite(isbn13: self.isbn13, isbn10: isbn10)
+                    
+                    DispatchQueue.main.async {
+                        print(self.productList.count)
+                        self.productList.sort(by: {($0.price + $0.shippingPrice) < ($1.price + $1.shippingPrice)})
+                        self.passData["products"] = self.productList
+                        self.passData["isbn13"] = self.isbn13
+                        self.performSegue(withIdentifier: "showResultView", sender: self.passData)
+                    }
                 }
             }
         }
-    }
-    
-    func searchBook(isbn13: String){
-        let system_id = "Tokyo_Nakano"
-        
-        guard let req_url = URL(string: "http://api.calil.jp/check?appkey=\(apiKey["kariru"]!)&isbn=\(isbn13)&systemid=\(system_id)&callback=no&format=json") else {
-            return
-        }
-        //リクエストに必要な情報を生成
-        let req = URLRequest(url: req_url)
-        //データ転送を管理するためのセッションを生成
-        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
-        //リクエストをタスクとして登録
-        let task = session.dataTask(with: req, completionHandler: {
-            (data, response, error) in
-            //セッションを終了
-            session.finishTasksAndInvalidate()
-            do{
-                if let jsonObject = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary,
-                    let books = jsonObject["books"] as? NSDictionary,
-                    let isbn = books[isbn13] as? NSDictionary,
-                    //要修正
-                    let location = isbn[system_id] as? NSDictionary
-                {
-                    self.reserveURL = (location["reserveurl"] as? String)!
-                }
-            } catch {
-                print(error)
-            }
-        })
-        task.resume()
     }
     
     //取得したISBNに従ってスクレイピング

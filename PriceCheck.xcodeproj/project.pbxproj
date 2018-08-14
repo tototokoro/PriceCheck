@@ -11,6 +11,7 @@
 		82268382211835A200BA0828 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82268381211835A200BA0828 /* CustomTableViewCell.swift */; };
 		827EECD9211C23CC00016732 /* ApiKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827EECD8211C23CC00016732 /* ApiKey.swift */; };
 		829ABE0321201C53008EAEDA /* BookListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829ABE0221201C53008EAEDA /* BookListViewController.swift */; };
+		829ABE0921224416008EAEDA /* SavedProductTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829ABE0821224416008EAEDA /* SavedProductTableViewCell.swift */; };
 		82F13AB0211576CE006FD4C2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F13AAF211576CE006FD4C2 /* AppDelegate.swift */; };
 		82F13AB2211576CE006FD4C2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F13AB1211576CE006FD4C2 /* ViewController.swift */; };
 		82F13AB5211576CE006FD4C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 82F13AB3211576CE006FD4C2 /* Main.storyboard */; };
@@ -24,6 +25,7 @@
 		82268381211835A200BA0828 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		827EECD8211C23CC00016732 /* ApiKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiKey.swift; sourceTree = "<group>"; };
 		829ABE0221201C53008EAEDA /* BookListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListViewController.swift; sourceTree = "<group>"; };
+		829ABE0821224416008EAEDA /* SavedProductTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedProductTableViewCell.swift; sourceTree = "<group>"; };
 		82F13AAC211576CE006FD4C2 /* PriceCheck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PriceCheck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82F13AAF211576CE006FD4C2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		82F13AB1211576CE006FD4C2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 				82268381211835A200BA0828 /* CustomTableViewCell.swift */,
 				827EECD8211C23CC00016732 /* ApiKey.swift */,
 				829ABE0221201C53008EAEDA /* BookListViewController.swift */,
+				829ABE0821224416008EAEDA /* SavedProductTableViewCell.swift */,
 			);
 			path = PriceCheck;
 			sourceTree = "<group>";
@@ -216,6 +219,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				82F13AB2211576CE006FD4C2 /* ViewController.swift in Sources */,
+				829ABE0921224416008EAEDA /* SavedProductTableViewCell.swift in Sources */,
 				82F13AB0211576CE006FD4C2 /* AppDelegate.swift in Sources */,
 				82F13AC22115A74C006FD4C2 /* CameraViewController.swift in Sources */,
 				82F13AC42115A9ED006FD4C2 /* ResultViewController.swift in Sources */,
