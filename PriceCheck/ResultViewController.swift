@@ -3,8 +3,7 @@ import SafariServices
 
 class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SFSafariViewControllerDelegate {
     
-    var passedData: [String: Any] = [:]
-    var productList: [(name:String, price:Int, shippingPrice:Int, condition:String, link:URL, image:URL)] = []
+    var productsList: [String: [ProductInfo]] = [:]
     var reserveURL = ""
     var isbn13: String?
     var bookList: [String] = []
@@ -24,9 +23,7 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
         self.navigationItem.setRightBarButtonItems([addBookButton], animated: true)
 
-        //前画面から受け取ったデータを各変数に代入
-        productList = passedData["products"] as! [(name: String, price: Int, shippingPrice: Int, condition: String, link: URL, image: URL)]
-        isbn13 = passedData["isbn13"] as? String
+        isbn13 = productsList.keys.first
         
         if let tempData = bookData.object(forKey: "BookList") {
             bookList = tempData as! [String]
@@ -41,7 +38,6 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
             if(!bookList.contains(isbn13)){
                 bookList.append(isbn13)
             }
-            
             librarySearchBook(isbn13: isbn13)
         }
     }
@@ -126,24 +122,22 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     //セルの個数を指定
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return productList.count
+        return (productsList[isbn13!]!.count)
     }
     
     //セルに値を設定するデータソースメソッド
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "productInfoCell", for: indexPath) as! CustomTableViewCell
-        
-        if let imageData = try? Data(contentsOf: productList[indexPath.row].image){
+        let product = productsList[isbn13!]![indexPath.row]
+
+        if let imageData = try? Data(contentsOf: product.image!){
             cell.myImageView.image = UIImage(data: imageData)
         }
-
-        cell.productNameLabel.text = productList[indexPath.row].name.replacingOccurrences(of: " ", with: "")
-
-        cell.conditionLabel.text = productList[indexPath.row].condition.replacingOccurrences(of: " ", with: "")
-        cell.priceLabel.text = "¥ \(String(productList[indexPath.row].price))"
-
-        cell.shippingPriceLabel.text = "¥ \(String(productList[indexPath.row].shippingPrice))"
+        cell.productNameLabel.text = product.name!.replacingOccurrences(of: " ", with: "")
+        cell.conditionLabel.text = product.condition?.replacingOccurrences(of: " ", with: "")
+        cell.priceLabel.text = "¥ \(String(product.price!))"
+        cell.shippingPriceLabel.text = "¥ \(String(product.shippingPrice!))"
         
         return cell
     }
@@ -154,7 +148,7 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.deselectRow(at: indexPath, animated: true)
         
         //SFSafariViewを開く
-        let safariViewController = SFSafariViewController(url: productList[indexPath.row].link)
+        let safariViewController = SFSafariViewController(url: productsList[isbn13!]![indexPath.row].link!)
         
         //delegateの通知先を自分自身
         safariViewController.delegate = self

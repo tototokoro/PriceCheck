@@ -5,8 +5,7 @@ import Kanna
 
 class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     
-    var productList: [(name:String, price:Int, shippingPrice:Int, condition:String, link:URL, image:URL)] = []
-    var passData: [String: Any] = [:]
+    var productsList: [String : [ProductInfo]] = [:]
     var isbn13: String = ""
     var cCode: String = ""
     
@@ -79,7 +78,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        productList.removeAll()
+        productsList.removeAll()
         isbn13 = ""
         cCode = ""
         self.session.startRunning()
@@ -119,17 +118,16 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
                 
                 print(cCode)
                 let isbn10 = isbn13Toisbn10(isbn13: isbn13)
+                self.productsList[isbn13] = []
                 
                 DispatchQueue.global(qos: .default).async {
                     //番号を元にスクレイピング
                     self.scrapeWebsite(isbn13: self.isbn13, isbn10: isbn10)
                     
                     DispatchQueue.main.async {
-                        print(self.productList.count)
-                        self.productList.sort(by: {($0.price + $0.shippingPrice) < ($1.price + $1.shippingPrice)})
-                        self.passData["products"] = self.productList
-                        self.passData["isbn13"] = self.isbn13
-                        self.performSegue(withIdentifier: "showResultView", sender: self.passData)
+                        self.productsList[self.isbn13]?.sort(by: {($0.price! + $0.shippingPrice!) < ($1.price! + $1.shippingPrice!)})
+                        
+                        self.performSegue(withIdentifier: "showResultView", sender: self.productsList)
                     }
                 }
             }
@@ -146,39 +144,40 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
             if let doc = try? HTML(html: amazonData, encoding: .utf8){
                 //商品名取得
                 productName = doc.css("li#result_0 h2").first!.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-                print(productName)
             }
             
             let detailPageUrl = "https://www.amazon.co.jp/gp/offer-listing/\(isbn10)"
             if let detailData = self.getHtml(url: detailPageUrl){
                 if let doc = try? HTML(html: detailData, encoding: .utf8){
-                    var imageURL: URL?
-                    
-                    if let image = doc.css("div#olpProductImage img").first!["src"]{
-                        //アマゾンの画像URLを取得
-                        imageURL = URL(string: image)
-                    } else{
-                        print("画像見つからず")
-                    }
                     
                     let products = doc.css("div.olpOffer")
+                    
                     for product in products.prefix(5){
+                        var productInfo = ProductInfo()
+                        productInfo.name = productName
                         //値段
-                        let price = product.css("span.a-color-price").first!.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+                        productInfo.price = self.getPrice(price: product.css("span.a-color-price").first!.text!.trimmingCharacters(in: .whitespacesAndNewlines))
                         
-                        var shippingPrice: String?
                         //送料
                         if let a = product.css("span.olpShippingPrice").first{
-                            shippingPrice = a.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+                            productInfo.shippingPrice = self.getPrice(price: a.text!.trimmingCharacters(in: .whitespacesAndNewlines))
                         } else{
-                            shippingPrice = "0"
+                            productInfo.shippingPrice = 0
                         }
                         
                         //コンディション
-                        let codition = product.css("span.olpCondition").first!.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+                        productInfo.condition = product.css("span.olpCondition").first!.text!.trimmingCharacters(in: .whitespacesAndNewlines)
                         
-
-                        self.productList.append((name: productName, price: self.getPrice(price: price), shippingPrice: self.getPrice(price: shippingPrice!),  condition: codition, link: URL(string: detailPageUrl)!, image: imageURL!))
+                        productInfo.link = URL(string: detailPageUrl)
+                        
+                        if let image = doc.css("div#olpProductImage img").first!["src"]{
+                            //アマゾンの画像URLを取得
+                            productInfo.image = URL(string: image)
+                        } else{
+                            print("画像見つからず")
+                        }
+                        
+                        self.productsList[isbn13]?.append(productInfo)
                     }
                 }
             }
@@ -191,7 +190,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     
     private func getMercariProduct(productName: String) {
         let mercariUrl = "https://www.mercari.com/jp/search/?keyword=\(productName)&shipping_payer_id%5B2%5D=1&status_on_sale=1"
-        
+       
         if let mercariData = self.getHtml(url: mercariUrl){
             if let doc = try? HTML(html: mercariData, encoding: .utf8){
                 
@@ -201,22 +200,25 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
                 if(numberItems == "検索結果 0件"){
                     print(numberItems)
                 } else {
-                    var tempProductList: [(name:String, price:Int, shippingPrice:Int, condition:String, link:URL, image:URL)] = []
+                    var tempProductList: [ProductInfo] = []
+                    var productInfo =  ProductInfo()
                     
                     let products = doc.css("section.items-box")
                     
                     for product in products{
-                        let name = product.css("h3").first!.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-                        let price = product.css("div.items-box-price").first!.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-                        let link = product.css("a").first!["href"]
-                        let image = product.css("img").first!["data-src"]
+                        productInfo.name = product.css("h3").first!.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+                        productInfo.price = self.getPrice(price: product.css("div.items-box-price").first!.text!.trimmingCharacters(in: .whitespacesAndNewlines))
+                        productInfo.shippingPrice = 0
+                        productInfo.condition = "不明"
+                        productInfo.link = URL(string: product.css("a").first!["href"]!)
+                        productInfo.image = URL(string: product.css("img").first!["data-src"]!)
                         
-                        tempProductList.append((name: name, price: self.getPrice(price: price), shippingPrice: 0, condition: "不明", link: URL(string: link!)!, image: URL(string: image!)!))
-                        
+                        tempProductList.append(productInfo)
                     }
-                    tempProductList.sort(by: {($0.price + $0.shippingPrice) < ($1.price + $1.shippingPrice)})
                     
-                    self.productList += tempProductList.prefix(5)
+                    tempProductList.sort(by: {($0.price! + $0.shippingPrice!) < ($1.price! + $1.shippingPrice!)})
+                    
+                    self.productsList[isbn13]?.append(contentsOf: tempProductList.prefix(5))
                 }
             }
         }
@@ -277,7 +279,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showResultView" {
             let nextViewController = segue.destination as! ResultViewController
-            nextViewController.passedData = sender as! [String: Any]
+            nextViewController.productsList = sender as! [String: [ProductInfo]]
         }
     }
 }

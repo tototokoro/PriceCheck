@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0A8EA5F7AEE6047CA5C695C8 /* Pods_PriceCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C913303E8A41A5E75B01B3F7 /* Pods_PriceCheck.framework */; };
 		82268382211835A200BA0828 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82268381211835A200BA0828 /* CustomTableViewCell.swift */; };
+		82344EBA21230E1D002D15AB /* ProductInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82344EB921230E1D002D15AB /* ProductInfo.swift */; };
 		827EECD9211C23CC00016732 /* ApiKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827EECD8211C23CC00016732 /* ApiKey.swift */; };
 		829ABE0321201C53008EAEDA /* BookListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829ABE0221201C53008EAEDA /* BookListViewController.swift */; };
 		829ABE0921224416008EAEDA /* SavedProductTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829ABE0821224416008EAEDA /* SavedProductTableViewCell.swift */; };
@@ -23,6 +24,7 @@
 
 /* Begin PBXFileReference section */
 		82268381211835A200BA0828 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
+		82344EB921230E1D002D15AB /* ProductInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductInfo.swift; sourceTree = "<group>"; };
 		827EECD8211C23CC00016732 /* ApiKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiKey.swift; sourceTree = "<group>"; };
 		829ABE0221201C53008EAEDA /* BookListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListViewController.swift; sourceTree = "<group>"; };
 		829ABE0821224416008EAEDA /* SavedProductTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedProductTableViewCell.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				827EECD8211C23CC00016732 /* ApiKey.swift */,
 				829ABE0221201C53008EAEDA /* BookListViewController.swift */,
 				829ABE0821224416008EAEDA /* SavedProductTableViewCell.swift */,
+				82344EB921230E1D002D15AB /* ProductInfo.swift */,
 			);
 			path = PriceCheck;
 			sourceTree = "<group>";
@@ -221,6 +224,7 @@
 				82F13AB2211576CE006FD4C2 /* ViewController.swift in Sources */,
 				829ABE0921224416008EAEDA /* SavedProductTableViewCell.swift in Sources */,
 				82F13AB0211576CE006FD4C2 /* AppDelegate.swift in Sources */,
+				82344EBA21230E1D002D15AB /* ProductInfo.swift in Sources */,
 				82F13AC22115A74C006FD4C2 /* CameraViewController.swift in Sources */,
 				82F13AC42115A9ED006FD4C2 /* ResultViewController.swift in Sources */,
 				827EECD9211C23CC00016732 /* ApiKey.swift in Sources */,
