@@ -8,7 +8,8 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     var productsList: [String : [ProductInfo]] = [:]
     var isbn13: String = ""
     var cCode: String = ""
-    
+    var bookImage: URL?
+    var passData = [String: Any]()
     let detectionArea = UIView()
     
     // カメラやマイクの入出力を管理するオブジェクトを生成
@@ -116,9 +117,18 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
                 //読み取り終了
                 self.session.stopRunning()
                 
-                print(cCode)
                 let isbn10 = isbn13Toisbn10(isbn13: isbn13)
                 self.productsList[isbn13] = []
+                
+                //読み取り直後に表示（もう少し工夫してもいいかも）
+                //ダイアログを表示する
+                let alertController = UIAlertController(title: "読み取り完了", message: "本を探しています", preferredStyle: .alert)
+                //OKボタンを追加
+                let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                //アクションを追加
+                alertController.addAction(defaultAction)
+                //ダイアログの表示
+                present(alertController, animated: true, completion: nil)
                 
                 DispatchQueue.global(qos: .default).async {
                     //番号を元にスクレイピング
@@ -127,7 +137,10 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
                     DispatchQueue.main.async {
                         self.productsList[self.isbn13]?.sort(by: {($0.price! + $0.shippingPrice!) < ($1.price! + $1.shippingPrice!)})
                         
-                        self.performSegue(withIdentifier: "showResultView", sender: self.productsList)
+                        self.passData["productsList"] = self.productsList
+                        self.passData["image"] = self.bookImage
+                        
+                        self.performSegue(withIdentifier: "showResultView", sender: self.passData)
                     }
                 }
             }
@@ -154,7 +167,9 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
                     
                     for product in products.prefix(5){
                         var productInfo = ProductInfo()
+                        //商品名
                         productInfo.name = productName
+                        
                         //値段
                         productInfo.price = self.getPrice(price: product.css("span.a-color-price").first!.text!.trimmingCharacters(in: .whitespacesAndNewlines))
                         
@@ -172,6 +187,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
                         
                         if let image = doc.css("div#olpProductImage img").first!["src"]{
                             //アマゾンの画像URLを取得
+                            bookImage = URL(string: image)
                             productInfo.image = URL(string: image)
                         } else{
                             print("画像見つからず")
@@ -271,7 +287,6 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         } else{
             tempIsbn10 += String(checkDigit)
         }
-        
         return tempIsbn10
     }
     
@@ -279,7 +294,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showResultView" {
             let nextViewController = segue.destination as! ResultViewController
-            nextViewController.productsList = sender as! [String: [ProductInfo]]
+            nextViewController.passedData = sender as! [String: Any]
         }
     }
 }

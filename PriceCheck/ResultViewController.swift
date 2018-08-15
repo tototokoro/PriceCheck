@@ -3,43 +3,48 @@ import SafariServices
 
 class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SFSafariViewControllerDelegate {
     
+    var passedData = [String: Any]()
     var productsList: [String: [ProductInfo]] = [:]
     var reserveURL = ""
     var isbn13: String?
-    var bookList: [String] = []
+    var bookList = [String: BookInfo]()
+    var bookInfo = BookInfo()
     //ナビゲーションバーボタン（読みたい本）
     var addBookButton: UIBarButtonItem!
+    //UserDefaultsのインスタンスを生成
+    let bookData = UserDefaults.standard
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var reserveButton: UIButton!
     
-    //UserDefaultsのインスタンスを生成
-    let bookData = UserDefaults.standard
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        addBookButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(clickAddBook(sender:)))
-
-        self.navigationItem.setRightBarButtonItems([addBookButton], animated: true)
-
-        isbn13 = productsList.keys.first
-        
-        if let tempData = bookData.object(forKey: "BookList") {
-            bookList = tempData as! [String]
-        }
         
         tableView.dataSource = self
         tableView.delegate = self
         
-        self.tableView.reloadData()
+        addBookButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(clickAddBook(sender:)))
+        self.navigationItem.setRightBarButtonItems([addBookButton], animated: true)
+
+        productsList = passedData["productsList"] as! [String : [ProductInfo]]
+        isbn13 = productsList.keys.first
+        
+        if let tempData = bookData.data(forKey: "BookList"), let decoded = try? JSONDecoder().decode([String: BookInfo].self, from: tempData) {
+            bookList = decoded
+        }
         
         if let isbn13 = isbn13{
-            if(!bookList.contains(isbn13)){
-                bookList.append(isbn13)
+            bookInfo.image = passedData["image"] as? URL
+            //要修正
+            bookInfo.name = productsList[isbn13]?.first?.name
+            
+            if(!bookList.keys.contains(isbn13)){
+                bookList[isbn13] = bookInfo
             }
             librarySearchBook(isbn13: isbn13)
         }
+        
+        self.tableView.reloadData()
     }
     
     //図書館に本があるか探す
@@ -93,7 +98,10 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     //本をリストに追加
     @objc func clickAddBook(sender: UIButton){
-        bookData.set(bookList, forKey: "BookList")
+        if let encoded = try? JSONEncoder().encode(bookList){
+            bookData.set(encoded, forKey: "BookList")
+            bookData.synchronize()
+        }
         
         //ダイアログを表示する(To Do メッセージ部分工夫する)
         let alertController = UIAlertController(title: "リストに追加", message: "本をリストに追加しました", preferredStyle: .alert)
@@ -101,12 +109,11 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         //アクションを追加
         alertController.addAction(defaultAction)
-        
         //ダイアログの表示
         present(alertController, animated: true, completion: nil)
-        
     }
 
+    //図書館の予約ページへ移動
     @IBAction func showReservePage(_ sender: Any) {
         let safariViewController = SFSafariViewController(url: URL(string: reserveURL)!)
         
@@ -123,6 +130,7 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
     //セルの個数を指定
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (productsList[isbn13!]!.count)
+//        return 1
     }
     
     //セルに値を設定するデータソースメソッド
@@ -135,7 +143,7 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
             cell.myImageView.image = UIImage(data: imageData)
         }
         cell.productNameLabel.text = product.name!.replacingOccurrences(of: " ", with: "")
-        cell.conditionLabel.text = product.condition?.replacingOccurrences(of: " ", with: "")
+        cell.conditionLabel.text = product.condition!.replacingOccurrences(of: " ", with: "")
         cell.priceLabel.text = "¥ \(String(product.price!))"
         cell.shippingPriceLabel.text = "¥ \(String(product.shippingPrice!))"
         

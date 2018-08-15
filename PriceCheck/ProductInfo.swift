@@ -8,3 +8,9 @@ struct ProductInfo {
     var link: URL?
     var image: URL?
 }
+
+struct BookInfo: Codable {
+    var name: String?
+//    var previousPrice: Int? //price + shippingPrice
+    var image: URL?
+}

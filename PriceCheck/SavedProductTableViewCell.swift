@@ -4,8 +4,6 @@ class SavedProductTableViewCell: UITableViewCell {
 
     @IBOutlet weak var productImage: UIImageView!
     @IBOutlet weak var productNameLabel: UILabel!
-    @IBOutlet weak var previousPriceLabel: UILabel!
-    @IBOutlet weak var currentPriceLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

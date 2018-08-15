@@ -84,10 +84,10 @@
 				82F13AC12115A74C006FD4C2 /* CameraViewController.swift */,
 				82F13AC32115A9ED006FD4C2 /* ResultViewController.swift */,
 				82268381211835A200BA0828 /* CustomTableViewCell.swift */,
-				827EECD8211C23CC00016732 /* ApiKey.swift */,
 				829ABE0221201C53008EAEDA /* BookListViewController.swift */,
 				829ABE0821224416008EAEDA /* SavedProductTableViewCell.swift */,
 				82344EB921230E1D002D15AB /* ProductInfo.swift */,
+				827EECD8211C23CC00016732 /* ApiKey.swift */,
 			);
 			path = PriceCheck;
 			sourceTree = "<group>";
