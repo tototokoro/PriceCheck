@@ -130,7 +130,6 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
     //セルの個数を指定
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (productsList[isbn13!]!.count)
-//        return 1
     }
     
     //セルに値を設定するデータソースメソッド

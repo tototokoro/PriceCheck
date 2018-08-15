@@ -6,7 +6,7 @@ class BookListViewController: UIViewController, UITableViewDelegate, UITableView
     var bookList = [String: BookInfo]()
     
     struct Objects {
-        var sectionName : String!
+        var isbn13 : String!
         var sectionObjects : BookInfo!
     }
     
@@ -25,8 +25,7 @@ class BookListViewController: UIViewController, UITableViewDelegate, UITableView
         }
         
         for (key, value) in bookList {
-            print("\(key) -> \(value)")
-            objectArray.append(Objects(sectionName: key, sectionObjects: value))
+            objectArray.append(Objects(isbn13: key, sectionObjects: value))
         }
         
         self.tableView.reloadData()
@@ -53,6 +52,22 @@ class BookListViewController: UIViewController, UITableViewDelegate, UITableView
         }
         cell.productNameLabel.text = objectArray[indexPath.row].sectionObjects.name
         return cell
+    }
+    
+    //各セルの編集（削除）をするメソッド セルの削除ボタンのデザイン変更
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteButton: UITableViewRowAction = UITableViewRowAction(style: .normal, title: "削除"){ (action, index) -> Void in
+            self.bookList[self.objectArray[indexPath.row].isbn13] = nil
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            
+            if let encoded = try? JSONEncoder().encode(self.bookList){
+                self.bookData.set(encoded, forKey: "BookList")
+                self.bookData.synchronize()
+            }
+        }
+        deleteButton.backgroundColor = UIColor.red
+        
+        return [deleteButton]
     }
     
 }
