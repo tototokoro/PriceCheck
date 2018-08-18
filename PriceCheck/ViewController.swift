@@ -2,8 +2,11 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    let bookData = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -17,5 +20,9 @@ class ViewController: UIViewController {
     
     @IBAction func toCameraView(_ sender: Any) {
         performSegue(withIdentifier: "showCameraView", sender: nil)
+    }
+    
+    @IBAction func toRegisterLibraryView(_ sender: Any) {
+        performSegue(withIdentifier: "showRegisterWay", sender: nil)
     }
 }

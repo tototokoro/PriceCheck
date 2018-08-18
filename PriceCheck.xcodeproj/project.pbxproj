@@ -10,6 +10,14 @@
 		0A8EA5F7AEE6047CA5C695C8 /* Pods_PriceCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C913303E8A41A5E75B01B3F7 /* Pods_PriceCheck.framework */; };
 		82268382211835A200BA0828 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82268381211835A200BA0828 /* CustomTableViewCell.swift */; };
 		82344EBA21230E1D002D15AB /* ProductInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82344EB921230E1D002D15AB /* ProductInfo.swift */; };
+		82344EDA21261C73002D15AB /* ChooseRegisterWayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82344ED921261C73002D15AB /* ChooseRegisterWayViewController.swift */; };
+		82344EDC21261E04002D15AB /* AreaSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82344EDB21261E04002D15AB /* AreaSelectViewController.swift */; };
+		82344EDE2126266F002D15AB /* CityInfo.csv in Resources */ = {isa = PBXBuildFile; fileRef = 82344EDD2126266F002D15AB /* CityInfo.csv */; };
+		82344EE021262BDF002D15AB /* PrefInfo.csv in Resources */ = {isa = PBXBuildFile; fileRef = 82344EDF21262BDF002D15AB /* PrefInfo.csv */; };
+		82344EE4212631F8002D15AB /* AreaList.csv in Resources */ = {isa = PBXBuildFile; fileRef = 82344EE3212631F7002D15AB /* AreaList.csv */; };
+		82344EE621263324002D15AB /* PrefSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82344EE521263324002D15AB /* PrefSelectViewController.swift */; };
+		82344EE821263CCA002D15AB /* AreaPref.csv in Resources */ = {isa = PBXBuildFile; fileRef = 82344EE721263CC9002D15AB /* AreaPref.csv */; };
+		82344EEA21267440002D15AB /* CitySelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82344EE921267440002D15AB /* CitySelectViewController.swift */; };
 		827EECD9211C23CC00016732 /* ApiKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827EECD8211C23CC00016732 /* ApiKey.swift */; };
 		829ABE0321201C53008EAEDA /* BookListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829ABE0221201C53008EAEDA /* BookListViewController.swift */; };
 		829ABE0921224416008EAEDA /* SavedProductTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829ABE0821224416008EAEDA /* SavedProductTableViewCell.swift */; };
@@ -25,6 +33,14 @@
 /* Begin PBXFileReference section */
 		82268381211835A200BA0828 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		82344EB921230E1D002D15AB /* ProductInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductInfo.swift; sourceTree = "<group>"; };
+		82344ED921261C73002D15AB /* ChooseRegisterWayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseRegisterWayViewController.swift; sourceTree = "<group>"; };
+		82344EDB21261E04002D15AB /* AreaSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaSelectViewController.swift; sourceTree = "<group>"; };
+		82344EDD2126266F002D15AB /* CityInfo.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CityInfo.csv; sourceTree = "<group>"; };
+		82344EDF21262BDF002D15AB /* PrefInfo.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PrefInfo.csv; sourceTree = "<group>"; };
+		82344EE3212631F7002D15AB /* AreaList.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AreaList.csv; sourceTree = "<group>"; };
+		82344EE521263324002D15AB /* PrefSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefSelectViewController.swift; sourceTree = "<group>"; };
+		82344EE721263CC9002D15AB /* AreaPref.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AreaPref.csv; sourceTree = "<group>"; };
+		82344EE921267440002D15AB /* CitySelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitySelectViewController.swift; sourceTree = "<group>"; };
 		827EECD8211C23CC00016732 /* ApiKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiKey.swift; sourceTree = "<group>"; };
 		829ABE0221201C53008EAEDA /* BookListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListViewController.swift; sourceTree = "<group>"; };
 		829ABE0821224416008EAEDA /* SavedProductTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedProductTableViewCell.swift; sourceTree = "<group>"; };
@@ -75,6 +91,10 @@
 		82F13AAE211576CE006FD4C2 /* PriceCheck */ = {
 			isa = PBXGroup;
 			children = (
+				82344EE721263CC9002D15AB /* AreaPref.csv */,
+				82344EE3212631F7002D15AB /* AreaList.csv */,
+				82344EDF21262BDF002D15AB /* PrefInfo.csv */,
+				82344EDD2126266F002D15AB /* CityInfo.csv */,
 				82F13AB3211576CE006FD4C2 /* Main.storyboard */,
 				82F13AB6211576D0006FD4C2 /* Assets.xcassets */,
 				82F13AB8211576D0006FD4C2 /* LaunchScreen.storyboard */,
@@ -88,6 +108,10 @@
 				829ABE0821224416008EAEDA /* SavedProductTableViewCell.swift */,
 				82344EB921230E1D002D15AB /* ProductInfo.swift */,
 				827EECD8211C23CC00016732 /* ApiKey.swift */,
+				82344ED921261C73002D15AB /* ChooseRegisterWayViewController.swift */,
+				82344EDB21261E04002D15AB /* AreaSelectViewController.swift */,
+				82344EE521263324002D15AB /* PrefSelectViewController.swift */,
+				82344EE921267440002D15AB /* CitySelectViewController.swift */,
 			);
 			path = PriceCheck;
 			sourceTree = "<group>";
@@ -169,9 +193,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82344EE4212631F8002D15AB /* AreaList.csv in Resources */,
 				82F13ABA211576D0006FD4C2 /* LaunchScreen.storyboard in Resources */,
 				82F13AB7211576D0006FD4C2 /* Assets.xcassets in Resources */,
+				82344EE821263CCA002D15AB /* AreaPref.csv in Resources */,
+				82344EE021262BDF002D15AB /* PrefInfo.csv in Resources */,
 				82F13AB5211576CE006FD4C2 /* Main.storyboard in Resources */,
+				82344EDE2126266F002D15AB /* CityInfo.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,6 +249,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82344EDC21261E04002D15AB /* AreaSelectViewController.swift in Sources */,
 				82F13AB2211576CE006FD4C2 /* ViewController.swift in Sources */,
 				829ABE0921224416008EAEDA /* SavedProductTableViewCell.swift in Sources */,
 				82F13AB0211576CE006FD4C2 /* AppDelegate.swift in Sources */,
@@ -229,6 +258,9 @@
 				82F13AC42115A9ED006FD4C2 /* ResultViewController.swift in Sources */,
 				827EECD9211C23CC00016732 /* ApiKey.swift in Sources */,
 				82268382211835A200BA0828 /* CustomTableViewCell.swift in Sources */,
+				82344EE621263324002D15AB /* PrefSelectViewController.swift in Sources */,
+				82344EDA21261C73002D15AB /* ChooseRegisterWayViewController.swift in Sources */,
+				82344EEA21267440002D15AB /* CitySelectViewController.swift in Sources */,
 				829ABE0321201C53008EAEDA /* BookListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

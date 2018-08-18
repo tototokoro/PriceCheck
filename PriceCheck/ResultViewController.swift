@@ -49,51 +49,54 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     //図書館に本があるか探す
     func librarySearchBook(isbn13: String){
-        let system_id = "Tokyo_Nakano"
+        if let system_id = bookData.string(forKey: "SystemID"){
         
-        guard let req_url = URL(string: "http://api.calil.jp/check?appkey=\(apiKey["kariru"]!)&isbn=\(isbn13)&systemid=\(system_id)&callback=no&format=json") else {
-            return
-        }
-        
-        //リクエストに必要な情報を生成
-        let req = URLRequest(url: req_url)
-        
-        //データ転送を管理するためのセッションを生成
-        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
-        
-        //リクエストをタスクとして登録
-        let task = session.dataTask(with: req, completionHandler: {
-            (data, response, error) in
-            //セッションを終了
-            session.finishTasksAndInvalidate()
-            do{
-                if let jsonObject = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary,
-                    let books = jsonObject["books"] as? NSDictionary,
-                    let isbn = books[isbn13] as? NSDictionary,
-                    //要修正
-                    let location = isbn[system_id] as? NSDictionary
-                {
-                    
-                    DispatchQueue.global(qos: .default).async {
-                        self.reserveURL = (location["reserveurl"] as? String)!
+            guard let req_url = URL(string: "http://api.calil.jp/check?appkey=\(apiKey["kariru"]!)&isbn=\(isbn13)&systemid=\(system_id)&callback=no&format=json") else {
+                return
+            }
+            
+            print(req_url)
+            
+            //リクエストに必要な情報を生成
+            let req = URLRequest(url: req_url)
+            
+            //データ転送を管理するためのセッションを生成
+            let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
+            
+            //リクエストをタスクとして登録
+            let task = session.dataTask(with: req, completionHandler: {
+                (data, response, error) in
+                //セッションを終了
+                session.finishTasksAndInvalidate()
+                do{
+                    if let jsonObject = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary,
+                        let books = jsonObject["books"] as? NSDictionary,
+                        let isbn = books[isbn13] as? NSDictionary,
+                        //要修正
+                        let location = isbn[system_id] as? NSDictionary
+                    {
                         
-                        DispatchQueue.main.async {
-                            if(self.reserveURL != ""){
-                                self.reserveButton.isHidden = false
-                                self.reserveButton.isEnabled = true
-                                
-                                self.reserveButton.setTitle("図書館で予約する", for: .normal)
-                            } else{
-                                self.reserveButton.setTitle("見つかりませんでした", for: .normal)
+                        DispatchQueue.global(qos: .default).async {
+                            self.reserveURL = (location["reserveurl"] as? String)!
+                            
+                            DispatchQueue.main.async {
+                                if(self.reserveURL != ""){
+                                    self.reserveButton.isHidden = false
+                                    self.reserveButton.isEnabled = true
+                                    
+                                    self.reserveButton.setTitle("図書館で予約する", for: .normal)
+                                } else{
+                                    self.reserveButton.setTitle("見つかりませんでした", for: .normal)
+                                }
                             }
                         }
                     }
+                } catch {
+                    print(error)
                 }
-            } catch {
-                print(error)
-            }
-        })
-        task.resume()
+            })
+            task.resume()
+        }
     }
     
     //本をリストに追加
